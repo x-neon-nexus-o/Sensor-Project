@@ -26,8 +26,8 @@ bool roomOccupied   = false;
 float lastDistance   = -1.0;
 
 // ============== CONFIGURABLE RELAY PINS ==============
-int relay1Pin = 26;  // Default: Light
-int relay2Pin = 25;  // Default: Fan
+int relay1Pin = 26;
+int relay2Pin = 25;
 String relay1Name = "Light";
 String relay2Name = "Fan";
 
@@ -36,7 +36,7 @@ unsigned long lastPIRTrigger = 0;
 unsigned long lastPowerCalc  = 0;
 unsigned long bootTime       = 0;
 
-const long vacantDelay   = 180000;  // 3 minutes
+const long vacantDelay   = 180000;
 const long powerInterval = 1000;
 
 // ============== POWER TRACKING ==============
@@ -77,7 +77,7 @@ float readDistance() {
 void initRelayPins() {
     pinMode(relay1Pin, OUTPUT);
     pinMode(relay2Pin, OUTPUT);
-    digitalWrite(relay1Pin, HIGH);  // OFF (active LOW relay)
+    digitalWrite(relay1Pin, HIGH);
     digitalWrite(relay2Pin, HIGH);
 }
 
@@ -200,15 +200,6 @@ background:#475569;border-radius:26px;transition:0.3s}
 background:#fff;border-radius:50%;transition:0.3s}
 input:checked+.sl{background:linear-gradient(135deg,#38bdf8,#818cf8)}
 input:checked+.sl:before{transform:translateX(22px)}
-
-.port-cfg{margin-top:10px;padding:12px;background:rgba(15,23,42,0.5);
-border-radius:10px;border:1px solid rgba(255,255,255,0.04)}
-.port-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
-.port-row label{font-size:0.78rem;font-weight:600;min-width:90px}
-.port-row input{background:rgba(30,41,59,0.8);border:1px solid rgba(255,255,255,0.15);
-color:#e2e8f0;padding:6px 10px;border-radius:6px;font-size:0.78rem;width:70px;text-align:center}
-.port-row input[type=text]{width:120px}
-.port-row input:focus{outline:none;border-color:#38bdf8}
 )rawliteral";
 
 const char HTML_PART2[] PROGMEM = R"rawliteral(
@@ -241,11 +232,52 @@ background:rgba(0,0,0,0.6);z-index:200;justify-content:center;align-items:center
 .modal-bg.show{display:flex}
 .modal{background:rgba(30,41,59,0.95);backdrop-filter:blur(20px);
 border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:24px;
-max-width:420px;width:90%;animation:mIn 0.3s ease}
+max-width:480px;width:92%;animation:mIn 0.3s ease}
 @keyframes mIn{from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
-.modal h3{margin-bottom:16px;font-size:1rem;color:#38bdf8}
-.modal .port-row{margin-bottom:12px}
-.modal .bt{margin-top:8px}
+.modal h3{margin-bottom:6px;font-size:1.05rem;color:#38bdf8}
+.modal-sub{font-size:0.72rem;color:#64748b;margin-bottom:18px}
+
+.cfg-card{background:rgba(15,23,42,0.5);border:1px solid rgba(255,255,255,0.06);
+border-radius:12px;padding:16px;margin-bottom:12px}
+.cfg-card-title{font-size:0.8rem;font-weight:700;color:#e2e8f0;margin-bottom:12px;
+display:flex;align-items:center;gap:8px}
+.cfg-card-title span{font-size:1.2rem}
+.cfg-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.cfg-row:last-child{margin-bottom:0}
+.cfg-label{font-size:0.75rem;font-weight:600;color:#94a3b8;min-width:75px}
+
+.cfg-select{background:rgba(30,41,59,0.9);border:1px solid rgba(255,255,255,0.15);
+color:#e2e8f0;padding:8px 12px;border-radius:8px;font-size:0.8rem;
+font-family:'Segoe UI',system-ui,sans-serif;cursor:pointer;
+appearance:none;-webkit-appearance:none;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+background-repeat:no-repeat;background-position:right 10px center;
+padding-right:30px;transition:all 0.2s;flex:1;min-width:0}
+.cfg-select:hover{border-color:#38bdf8;background-color:rgba(56,189,248,0.08)}
+.cfg-select:focus{outline:none;border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,0.15)}
+.cfg-select option{background:#1e293b;color:#e2e8f0;padding:8px}
+
+.cfg-preview{margin-top:14px;padding:12px;background:rgba(56,189,248,0.06);
+border:1px solid rgba(56,189,248,0.15);border-radius:10px;
+font-size:0.75rem;color:#38bdf8}
+.cfg-preview-title{font-weight:700;margin-bottom:6px;font-size:0.7rem;
+text-transform:uppercase;letter-spacing:1px;color:#64748b}
+.cfg-preview-row{display:flex;justify-content:space-between;padding:3px 0}
+.cfg-preview-val{font-weight:700;color:#e2e8f0}
+
+.cfg-warn{margin-top:10px;padding:8px 12px;background:rgba(251,191,36,0.1);
+border:1px solid rgba(251,191,36,0.2);border-radius:8px;font-size:0.72rem;
+color:#fbbf24;display:none;align-items:center;gap:6px}
+
+.modal-btns{display:flex;gap:8px;margin-top:16px;justify-content:flex-end}
+.modal-btns .bt{padding:9px 18px}
+
+.cfg-msg{margin-top:10px;padding:10px 14px;border-radius:8px;font-size:0.78rem;
+font-weight:600;display:none;text-align:center;animation:si 0.3s ease}
+.cfg-msg.ok{display:block;background:rgba(34,197,94,0.15);
+border:1px solid rgba(34,197,94,0.3);color:#4ade80}
+.cfg-msg.err{display:block;background:rgba(239,68,68,0.15);
+border:1px solid rgba(239,68,68,0.3);color:#f87171}
 </style>
 </head>
 <body>
@@ -277,17 +309,17 @@ max-width:420px;width:90%;animation:mIn 0.3s ease}
 <span id="ml" style="margin-left:6px;font-size:0.72rem;color:#38bdf8">● AUTO</span>
 </div>
 <div class="rr">
-<div class="ri"><span class="ri-i">💡</span><div><div class="ri-n" id="r1name">Light</div><div class="ri-s" id="r1info">Pin 26 · 40W</div></div></div>
+<div class="ri"><span class="ri-i" id="r1icon">💡</span><div><div class="ri-n" id="r1name">Light</div><div class="ri-s" id="r1info">Pin 26 · 40W</div></div></div>
 <span class="rs rof" id="s1">OFF</span>
 <div class="bg"><button class="bt bn" onclick="cr(1,1)">ON</button><button class="bt bf" onclick="cr(1,0)">OFF</button></div>
 </div>
 <div class="rr">
-<div class="ri"><span class="ri-i">🌀</span><div><div class="ri-n" id="r2name">Fan</div><div class="ri-s" id="r2info">Pin 25 · 75W</div></div></div>
+<div class="ri"><span class="ri-i" id="r2icon">🌀</span><div><div class="ri-n" id="r2name">Fan</div><div class="ri-s" id="r2info">Pin 25 · 75W</div></div></div>
 <span class="rs rof" id="s2">OFF</span>
 <div class="bg"><button class="bt bn" onclick="cr(2,1)">ON</button><button class="bt bf" onclick="cr(2,0)">OFF</button></div>
 </div>
 <div style="text-align:center;margin-top:10px">
-<button class="bt bs" onclick="openPortCfg()">⚙️ Configure Ports</button>
+<button class="bt bs" onclick="openPortCfg()">⚙️ Configure Ports & Appliances</button>
 </div>
 </div>
 
@@ -317,27 +349,118 @@ const char HTML_PART3[] PROGMEM = R"rawliteral(
 </div>
 <div class="ft">Smart Classroom IoT &bull; ESP32</div>
 
-<!-- Port Config Modal -->
+<!-- ========== PORT CONFIG MODAL WITH DROPDOWNS ========== -->
 <div class="modal-bg" id="portModal">
 <div class="modal">
-<h3>⚙️ Assign GPIO Ports to Appliances</h3>
-<div class="port-row">
-<label>Appliance 1:</label>
-<input type="text" id="cfg_r1name" value="Light" placeholder="Name">
-<label>GPIO:</label>
-<input type="number" id="cfg_r1pin" value="26" min="0" max="39">
+<h3>⚙️ Port & Appliance Configuration</h3>
+<div class="modal-sub">Assign appliances to ESP32 GPIO pins using the dropdowns below</div>
+
+<!-- RELAY 1 CONFIG CARD -->
+<div class="cfg-card">
+<div class="cfg-card-title"><span>1️⃣</span> Relay Channel 1</div>
+<div class="cfg-row">
+<span class="cfg-label">Appliance:</span>
+<select class="cfg-select" id="cfg_r1name" onchange="updatePreview()">
+<option value="Light">💡 Light / Bulb</option>
+<option value="Fan">🌀 Fan</option>
+<option value="AC">❄️ Air Conditioner</option>
+<option value="Projector">📽️ Projector</option>
+<option value="Heater">🔥 Heater</option>
+<option value="Motor">⚙️ Motor / Pump</option>
+<option value="LED Strip">🌈 LED Strip</option>
+<option value="Exhaust">🌬️ Exhaust Fan</option>
+<option value="Speaker">🔊 Speaker / Amp</option>
+<option value="Charger">🔋 Charger Station</option>
+<option value="SmartBoard">📺 Smart Board</option>
+<option value="CCTV">📹 CCTV Camera</option>
+<option value="Custom">🔧 Custom Device</option>
+</select>
 </div>
-<div class="port-row">
-<label>Appliance 2:</label>
-<input type="text" id="cfg_r2name" value="Fan" placeholder="Name">
-<label>GPIO:</label>
-<input type="number" id="cfg_r2pin" value="25" min="0" max="39">
+<div class="cfg-row">
+<span class="cfg-label">GPIO Pin:</span>
+<select class="cfg-select" id="cfg_r1pin" onchange="updatePreview()">
+<option value="2">GPIO 2</option>
+<option value="4">GPIO 4</option>
+<option value="5">GPIO 5</option>
+<option value="12">GPIO 12</option>
+<option value="13">GPIO 13</option>
+<option value="15">GPIO 15</option>
+<option value="16">GPIO 16</option>
+<option value="17">GPIO 17</option>
+<option value="18">GPIO 18</option>
+<option value="19">GPIO 19</option>
+<option value="21">GPIO 21</option>
+<option value="22">GPIO 22</option>
+<option value="23">GPIO 23</option>
+<option value="25">GPIO 25</option>
+<option value="26" selected>GPIO 26</option>
+<option value="27">GPIO 27</option>
+</select>
 </div>
-<div style="display:flex;gap:8px;margin-top:14px;justify-content:flex-end">
-<button class="bt bf" onclick="closePortCfg()">Cancel</button>
-<button class="bt bn" onclick="savePortCfg()">💾 Save & Apply</button>
 </div>
-<div id="cfgMsg" style="margin-top:8px;font-size:0.75rem;color:#4ade80;display:none"></div>
+
+<!-- RELAY 2 CONFIG CARD -->
+<div class="cfg-card">
+<div class="cfg-card-title"><span>2️⃣</span> Relay Channel 2</div>
+<div class="cfg-row">
+<span class="cfg-label">Appliance:</span>
+<select class="cfg-select" id="cfg_r2name" onchange="updatePreview()">
+<option value="Light">💡 Light / Bulb</option>
+<option value="Fan" selected>🌀 Fan</option>
+<option value="AC">❄️ Air Conditioner</option>
+<option value="Projector">📽️ Projector</option>
+<option value="Heater">🔥 Heater</option>
+<option value="Motor">⚙️ Motor / Pump</option>
+<option value="LED Strip">🌈 LED Strip</option>
+<option value="Exhaust">🌬️ Exhaust Fan</option>
+<option value="Speaker">🔊 Speaker / Amp</option>
+<option value="Charger">🔋 Charger Station</option>
+<option value="SmartBoard">📺 Smart Board</option>
+<option value="CCTV">📹 CCTV Camera</option>
+<option value="Custom">🔧 Custom Device</option>
+</select>
+</div>
+<div class="cfg-row">
+<span class="cfg-label">GPIO Pin:</span>
+<select class="cfg-select" id="cfg_r2pin" onchange="updatePreview()">
+<option value="2">GPIO 2</option>
+<option value="4">GPIO 4</option>
+<option value="5">GPIO 5</option>
+<option value="12">GPIO 12</option>
+<option value="13">GPIO 13</option>
+<option value="15">GPIO 15</option>
+<option value="16">GPIO 16</option>
+<option value="17">GPIO 17</option>
+<option value="18">GPIO 18</option>
+<option value="19">GPIO 19</option>
+<option value="21">GPIO 21</option>
+<option value="22">GPIO 22</option>
+<option value="23">GPIO 23</option>
+<option value="25" selected>GPIO 25</option>
+<option value="26">GPIO 26</option>
+<option value="27">GPIO 27</option>
+</select>
+</div>
+</div>
+
+<!-- LIVE PREVIEW -->
+<div class="cfg-preview" id="cfgPreview">
+<div class="cfg-preview-title">📋 Configuration Preview</div>
+<div class="cfg-preview-row"><span>Channel 1:</span><span class="cfg-preview-val" id="pv1">Light → GPIO 26</span></div>
+<div class="cfg-preview-row"><span>Channel 2:</span><span class="cfg-preview-val" id="pv2">Fan → GPIO 25</span></div>
+</div>
+
+<!-- DUPLICATE PIN WARNING -->
+<div class="cfg-warn" id="cfgWarn">⚠️ Both channels use the same GPIO pin! Please select different pins.</div>
+
+<!-- STATUS MESSAGE -->
+<div class="cfg-msg" id="cfgMsg"></div>
+
+<!-- BUTTONS -->
+<div class="modal-btns">
+<button class="bt bf" onclick="closePortCfg()">✕ Cancel</button>
+<button class="bt bn" id="saveBtn" onclick="savePortCfg()">💾 Save & Apply</button>
+</div>
 </div>
 </div>
 
@@ -346,6 +469,15 @@ const char HTML_PART3[] PROGMEM = R"rawliteral(
 const MP=30;
 let lb=[],pd=[],ld=[],fd=[];
 let ns=0,ps=0;
+
+// Appliance icon mapping
+const appIcons={
+'Light':'💡','Fan':'🌀','AC':'❄️','Projector':'📽️',
+'Heater':'🔥','Motor':'⚙️','LED Strip':'🌈','Exhaust':'🌬️',
+'Speaker':'🔊','Charger':'🔋','SmartBoard':'📺','CCTV':'📹','Custom':'🔧'
+};
+
+function getIcon(name){return appIcons[name]||'🔌';}
 
 const pc=new Chart(document.getElementById('pc'),{
 type:'bar',
@@ -368,37 +500,78 @@ fetch('/mode?auto='+(a?'1':'0'));
 document.getElementById('ml').innerHTML=a?'<span style="color:#38bdf8">● AUTO</span>':'<span style="color:#fb923c">● MANUAL</span>';
 }
 
+// ===== PORT CONFIG MODAL FUNCTIONS =====
+
+function updatePreview(){
+let n1=document.getElementById('cfg_r1name').value;
+let p1=document.getElementById('cfg_r1pin').value;
+let n2=document.getElementById('cfg_r2name').value;
+let p2=document.getElementById('cfg_r2pin').value;
+
+document.getElementById('pv1').innerText=getIcon(n1)+' '+n1+' → GPIO '+p1;
+document.getElementById('pv2').innerText=getIcon(n2)+' '+n2+' → GPIO '+p2;
+
+// Check duplicate pins
+let warn=document.getElementById('cfgWarn');
+let saveBtn=document.getElementById('saveBtn');
+if(p1===p2){
+warn.style.display='flex';
+saveBtn.style.opacity='0.5';saveBtn.style.pointerEvents='none';
+}else{
+warn.style.display='none';
+saveBtn.style.opacity='1';saveBtn.style.pointerEvents='auto';
+}
+}
+
 function openPortCfg(){
 document.getElementById('portModal').classList.add('show');
+document.getElementById('cfgMsg').className='cfg-msg';
+document.getElementById('cfgMsg').style.display='none';
+
 fetch('/getports').then(r=>r.json()).then(d=>{
 document.getElementById('cfg_r1name').value=d.r1name;
 document.getElementById('cfg_r1pin').value=d.r1pin;
 document.getElementById('cfg_r2name').value=d.r2name;
 document.getElementById('cfg_r2pin').value=d.r2pin;
+updatePreview();
 });
 }
 
-function closePortCfg(){document.getElementById('portModal').classList.remove('show');}
+function closePortCfg(){
+document.getElementById('portModal').classList.remove('show');
+}
 
 function savePortCfg(){
 let r1n=document.getElementById('cfg_r1name').value;
 let r1p=document.getElementById('cfg_r1pin').value;
 let r2n=document.getElementById('cfg_r2name').value;
 let r2p=document.getElementById('cfg_r2pin').value;
+
+if(r1p===r2p){return;}
+
+let msg=document.getElementById('cfgMsg');
+msg.innerText='⏳ Applying changes...';
+msg.className='cfg-msg ai';msg.style.display='block';
+
 fetch('/setports?r1name='+encodeURIComponent(r1n)+'&r1pin='+r1p+'&r2name='+encodeURIComponent(r2n)+'&r2pin='+r2p)
 .then(r=>r.text()).then(t=>{
-let msg=document.getElementById('cfgMsg');
-msg.innerText='✅ '+t;msg.style.display='block';
-setTimeout(()=>{msg.style.display='none';closePortCfg();},2000);
+msg.innerText='✅ '+t;
+msg.className='cfg-msg ok';
+setTimeout(()=>{closePortCfg();},2000);
+}).catch(e=>{
+msg.innerText='❌ Failed to save! Check connection.';
+msg.className='cfg-msg err';
 });
 }
+
+// ===== ALERTS =====
 
 function ga(d){
 let h='';
 if(d.occupied)h+='<div class="al ai">👤 Room Occupied - Presence Detected</div>';
 else h+='<div class="al aw">🚪 Room Vacant - No Presence</div>';
-if(d.r1)h+='<div class="al ai">💡 '+d.r1name+' ON</div>';
-if(d.r2)h+='<div class="al ai">🌀 '+d.r2name+' ON</div>';
+if(d.r1)h+='<div class="al ai">'+getIcon(d.r1name)+' '+d.r1name+' ON</div>';
+if(d.r2)h+='<div class="al ai">'+getIcon(d.r2name)+' '+d.r2name+' ON</div>';
 if(d.powerNow==0)h+='<div class="al ak">🔋 Zero power draw</div>';
 document.getElementById('ab').innerHTML=h||'<div class="al ak">✅ Normal</div>';
 }
@@ -407,6 +580,8 @@ function fu(s){
 let h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sc=s%60;
 return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(sc).padStart(2,'0');
 }
+
+// ===== MAIN POLLING =====
 
 function poll(){
 fetch('/status').then(r=>r.json()).then(d=>{
@@ -425,10 +600,12 @@ document.getElementById('pw').innerText=d.powerNow.toFixed(0);
 document.getElementById('te').innerText=d.totalWh.toFixed(1);
 document.getElementById('up').innerText=fu(d.uptime);
 
+document.getElementById('r1icon').innerText=getIcon(d.r1name);
+document.getElementById('r2icon').innerText=getIcon(d.r2name);
 document.getElementById('r1name').innerText=d.r1name;
 document.getElementById('r2name').innerText=d.r2name;
-document.getElementById('r1info').innerText='Pin '+d.r1pin+' · '+d.lightW_rated+'W';
-document.getElementById('r2info').innerText='Pin '+d.r2pin+' · '+d.fanW_rated+'W';
+document.getElementById('r1info').innerText='GPIO '+d.r1pin+' · '+d.lightW_rated+'W';
+document.getElementById('r2info').innerText='GPIO '+d.r2pin+' · '+d.fanW_rated+'W';
 document.getElementById('lw_label').innerText=d.r1name+' Wh';
 document.getElementById('fw_label').innerText=d.r2name+' Wh';
 
@@ -567,26 +744,46 @@ void handleGetPorts() {
 }
 
 void handleSetPorts() {
+    // Validate pin numbers
+    int newPin1 = server.hasArg("r1pin") ? server.arg("r1pin").toInt() : relay1Pin;
+    int newPin2 = server.hasArg("r2pin") ? server.arg("r2pin").toInt() : relay2Pin;
+
+    // Safety: prevent duplicate pins
+    if (newPin1 == newPin2) {
+        server.send(400, "text/plain", "Error: Both channels cannot use the same GPIO pin!");
+        return;
+    }
+
+    // Safety: prevent using reserved sensor pins
+    int reserved[] = {PIR_PIN, TRIG_PIN, ECHO_PIN, 0, 1, 3, 6, 7, 8, 9, 10, 11};
+    int resCount = sizeof(reserved) / sizeof(reserved[0]);
+    for (int i = 0; i < resCount; i++) {
+        if (newPin1 == reserved[i] || newPin2 == reserved[i]) {
+            server.send(400, "text/plain", "Error: GPIO " + String(reserved[i]) + " is reserved for sensors!");
+            return;
+        }
+    }
+
     // Turn off current relays before changing pins
     setRelay1(false);
     setRelay2(false);
 
-    // Reset old pins to INPUT (release them)
+    // Release old pins
     pinMode(relay1Pin, INPUT);
     pinMode(relay2Pin, INPUT);
 
-    // Get new values
+    // Apply new values
     if (server.hasArg("r1name")) relay1Name = server.arg("r1name");
     if (server.hasArg("r2name")) relay2Name = server.arg("r2name");
-    if (server.hasArg("r1pin")) relay1Pin = server.arg("r1pin").toInt();
-    if (server.hasArg("r2pin")) relay2Pin = server.arg("r2pin").toInt();
+    relay1Pin = newPin1;
+    relay2Pin = newPin2;
 
     // Initialize new pins
     initRelayPins();
 
-    addLog("Port config changed: " + relay1Name + "=GPIO" + String(relay1Pin) + ", " + relay2Name + "=GPIO" + String(relay2Pin));
+    addLog("Config: " + relay1Name + "→GPIO" + String(relay1Pin) + ", " + relay2Name + "→GPIO" + String(relay2Pin));
 
-    server.send(200, "text/plain", "Ports updated! " + relay1Name + "→GPIO" + String(relay1Pin) + ", " + relay2Name + "→GPIO" + String(relay2Pin));
+    server.send(200, "text/plain", "Saved! " + relay1Name + " → GPIO" + String(relay1Pin) + ", " + relay2Name + " → GPIO" + String(relay2Pin));
 }
 
 void handleFavicon() {
@@ -648,11 +845,9 @@ void loop() {
     if (currentPir) lastPIRTrigger = millis();
     pirDetected = currentPir;
 
-    // Determine occupancy: PIR active OR was active within vacantDelay
     bool wasRecentlyOccupied = (millis() - lastPIRTrigger < vacantDelay);
     bool newOccupied = pirDetected || wasRecentlyOccupied;
 
-    // Log transition from occupied to vacant
     if (roomOccupied && !newOccupied) {
         addLog("Room now vacant");
     } else if (!roomOccupied && newOccupied) {
@@ -660,7 +855,7 @@ void loop() {
     }
     roomOccupied = newOccupied;
 
-    // Ultrasonic distance (informational)
+    // Ultrasonic distance
     float dist = readDistance();
     lastDistance = dist;
 
@@ -672,11 +867,11 @@ void loop() {
         lastPowerCalc = millis();
     }
 
-    // Auto control based on presence
+    // Auto control
     if (autoMode) {
         if (roomOccupied) {
             setRelay1(true);
-            setRelay2(true);  // Turn on fan when room is occupied (no temp sensor)
+            setRelay2(true);
         } else {
             setRelay1(false);
             setRelay2(false);
